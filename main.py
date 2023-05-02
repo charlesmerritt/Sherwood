@@ -5,13 +5,18 @@ import os
 from util import *
 
 AUTH_TOKEN = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
+PROPUBLICA = 'Z41JVKlvZxtLM1ADHn7Myn7xiWLrW6PKZNwnNtRV'
+live_quiverquant_url = 'https://api.quiverquant.com/beta/live/'
+hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
+congress_propublica_url = 'https://api.propublica.org/congress/v1/'
+
 
 #TODO: Implement functions of the CallObject class to get the different attributes of the call object and return them
 # as well as implement a function to parse the json into a call object.
 class CallObject:
-    def __init__(self, id, type, daterange, ticker, name):
+    def __init__(self, id, tradetype, daterange, ticker, name):
         self.id = id
-        self.type = type
+        self.tradetype = tradetype
         self.daterange = daterange
         self.ticker = ticker
         self.name = name
@@ -54,13 +59,16 @@ def senateTrades(name=None, ticker='', daterange=None):
                'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
                'Authorization': f'Token {AUTH_TOKEN}'}
     r = requests.get(url, headers=headers)
+    json_data = json.loads(r.content)
     #TODO: Parse r.content into call objects and return those instead
-    print(r.content)
-    return r.content
+    print(json_data)
+    return json_data
+
 
 def main():
     houseTrades(name='Nancy Pelosi', ticker='/TSLA')
     senateTrades(name='Mitch McConnell', ticker='/TSLA')
+
 
 if __name__ == '__main__':
     main()
