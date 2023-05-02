@@ -1,7 +1,6 @@
 import taipy as tp
+from taipy.gui import Gui
 import pandas as pd
-# Only used for clickable images
-import webbrowser
 from main import *
 from util import exception_handler
 import os
@@ -20,7 +19,7 @@ Home = """
 
 ### About the Project   
 =========================
-<|layout|columns=1 3|>
+<|layout|columns=1 3|> 
 
 """
 
@@ -67,6 +66,6 @@ gui = tp.Gui(pages=pages)
 
 
 if __name__ == '__main__':
-    app = gui.run(title='Sherwood Visualization Tool',
+    Gui(pages=pages).run(title='Sherwood Visualization Tool',
                   dark_mode=True,
-                  use_reloader=True,)
+                  use_reloader=True)

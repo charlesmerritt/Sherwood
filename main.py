@@ -4,7 +4,7 @@ import time
 import os
 from util import *
 
-AUTH_TOKEN = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
+QUIVER = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
 PROPUBLICA = 'Z41JVKlvZxtLM1ADHn7Myn7xiWLrW6PKZNwnNtRV'
 live_quiverquant_url = 'https://api.quiverquant.com/beta/live/'
 hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
@@ -36,7 +36,7 @@ def houseTrades(name=None, ticker='', daterange=None):
     print(url)
     headers = {'accept': 'application/json',
                'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
-               'Authorization': f'Token {AUTH_TOKEN}'}
+               'Authorization': f'Token {QUIVER}'}
     r = requests.get(url, headers=headers)
     print(r.content)
     #TODO: Parse r.content (json) into call objects and return those instead, separate function probably
@@ -57,7 +57,7 @@ def senateTrades(name=None, ticker='', daterange=None):
     print(url)
     headers = {'accept': 'application/json',
                'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
-               'Authorization': f'Token {AUTH_TOKEN}'}
+               'Authorization': f'Token {QUIVER}'}
     r = requests.get(url, headers=headers)
     json_data = json.loads(r.content)
     #TODO: Parse r.content into call objects and return those instead
