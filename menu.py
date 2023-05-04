@@ -93,6 +93,14 @@ House = """
 <|Wisconsin|button|on_action=house_on_button_action|id=WI|>
 <|Wyoming|button|on_action=house_on_button_action|id=WY|>
 |>
+
+<|Expand|button|on_action={lambda s: s.assign("show", True)}|>
+<|{show}|pane|persistent|anchor=right|on_close={lambda s: s.assign("show", False)}|width=600px|
+<|Representatives|expandable|
+
+|>
+<|{start_dt}|date|not with_time|on_change=start_date_onchange|>
+|>
 |>
 """
 
@@ -157,7 +165,7 @@ Senate = """
 <|Senators|expandable|
 
 |>
-<|{dt}|date|not with_time|on_change=start_date_onchange|>
+<|{start_dt}|date|not with_time|on_change=start_date_onchange|>
 |>
 |>
 """
@@ -171,7 +179,7 @@ pages = {
 
 show = True
 logo = "img/arrow.png"
-dt = datetime.datetime.now().strftime("%Y-%m-%d")
+start_dt = datetime.datetime.now()
 
 def senate_on_button_action(id):
     member_df, member_data = createStateLedger(id, 0)
@@ -183,14 +191,14 @@ def senate_on_button_action(id):
     # Then there needs to be some type of input bar, scrollable selector, or smth which allows for the input of a daterange
     # Could create a separate method which creates this popup that displays necessary info from the politician as well as input spots
     # Maybe not something to be done tn, but possibly make it so that the pop ups can be closed
+    print(member_df)
 
 
 def month_slider_action(state, var_name, value):
     pass
 
 def house_on_button_action(id):
-    id = id
-    print(id)
+    member_df, member_data = createStateLedger(id, 0)
 
 
 def pullUpProfile(id):
@@ -206,8 +214,8 @@ def get_data(path: str, id):
     return dataset
 
 
-def start_date_onchange(state, var_name, value):
-    state.start_date = value.date()
+def start_date_onchange(state, date):
+    pass
 
 
 def end_date_onchange(state, var_name, value):
