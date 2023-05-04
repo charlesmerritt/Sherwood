@@ -11,15 +11,20 @@ hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
 congress_propublica_url = 'https://api.propublica.org/congress/v1/'
 
 
-#TODO: Implement functions of the CallObject class to get the different attributes of the call object and return them
-# as well as implement a function to parse the json into a call object.
 class CallObject:
-    def __init__(self, id, tradetype, daterange, ticker, name):
+    def __init__(self, id, name, party, leadershipRole):
         self.id = id
-        self.tradetype = tradetype
-        self.daterange = daterange
-        self.ticker = ticker
+        self.party = party
         self.name = name
+        self.leadershipRole = leadershipRole
+    def setStockData(self, ticker, daterange, tradetype=''):
+        self.ticker = ticker
+        self.daterange = daterange
+        self.tradetype = tradetype
+    def getPoliticianInfo(self):
+        return self.id, self.party, self.name, self.leadershipRole
+    def getStockData(self):
+        return self.ticker, self.daterange, self.tradetype
 
 #TODO: Maybe merge houseTrades and senateTrades into one function with fstrings
 def houseTrades(name=None, ticker='', daterange=None):
