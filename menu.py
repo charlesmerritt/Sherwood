@@ -150,7 +150,7 @@ Senate = """
 <|West Virginia|button|on_action=senate_on_button_action|id=WV|>
 <|Wisconsin|button|on_action=senate_on_button_action|id=WI|>
 <|Wyoming|button|on_action=senate_on_button_action|id=WY|>
-|>|>
+|>
 
 <|Expand|button|on_action={lambda s: s.assign("show", True)}|>
 <|{show}|pane|persistent|anchor=right|on_close={lambda s: s.assign("show", False)}|width=600px|
