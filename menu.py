@@ -1,5 +1,5 @@
 import taipy as tp
-from taipy.gui import Gui
+from taipy.gui import Gui, notify
 import pandas as pd
 from main import *
 from util import exception_handler
@@ -25,13 +25,120 @@ Home = """
 
 House = """
 ### Parameters
-##### Enter a date range, or select 'live' to get the most recent data.
-##### Enter a congress member's name, or choose one from the dropdown menu.
-##### Enter a ticker symbol to search for, or leave it blank.
+##### Select a state to view data for representatives from that state.
+<|layout|columns=1 1|
+<|States|expandable|
+<|Alabama|button|on_action=house_on_button_action|id=AL|>
+<|Alaska|button|on_action=house_on_button_action|id=AK|>
+<|Arizona|button|on_action=house_on_button_action|id=AZ|>
+<|Arkansas|button|on_action=house_on_button_action|id=AR|>
+<|California|button|on_action=house_on_button_action|id=CA|>
+<|Colorado|button|on_action=house_on_button_action|id=CO|>
+<|Connecticut|button|on_action=house_on_button_action|id=CT|>
+<|Delaware|button|on_action=house_on_button_action|id=DE|>
+<|Florida|button|on_action=house_on_button_action|id=FL|>
+<|Georgia|button|on_action=house_on_button_action|id=GA|>
+<|Hawaii|button|on_action=house_on_button_action|id=HI|>
+<|Idaho|button|on_action=house_on_button_action|id=ID|>
+<|Illinois|button|on_action=house_on_button_action|id=IL|>
+<|Indiana|button|on_action=house_on_button_action|id=IN|>
+<|Iowa|button|on_action=house_on_button_action|id=IA|>
+<|Kansas|button|on_action=house_on_button_action|id=KS|>
+<|Kentucky|button|on_action=house_on_button_action|id=KY|>
+<|Louisiana|button|on_action=house_on_button_action|id=LA|>
+<|Maine|button|on_action=house_on_button_action|id=ME|>
+<|Maryland|button|on_action=house_on_button_action|id=MD|>
+<|Massachusetts|button|on_action=house_on_button_action|id=MA|>
+<|Michigan|button|on_action=house_on_button_action|id=MI|>
+<|Minnesota|button|on_action=house_on_button_action|id=MN|>
+<|Mississippi|button|on_action=house_on_button_action|id=MS|>
+<|Missouri|button|on_action=house_on_button_action|id=MO|>
+<|Montana|button|on_action=house_on_button_action|id=MT|>
+<|Nebraska|button|on_action=house_on_button_action|id=NE|>
+<|Nevada|button|on_action=house_on_button_action|id=NV|>
+<|New Hampshire|button|on_action=house_on_button_action|id=NH|>
+<|New Jersey|button|on_action=house_on_button_action|id=NJ|>
+<|New Mexico|button|on_action=house_on_button_action|id=NM|>
+<|New York|button|on_action=house_on_button_action|id=NY|>
+<|North Carolina|button|on_action=house_on_button_action|id=NC|>
+<|North Dakota|button|on_action=house_on_button_action|id=ND|>
+<|Ohio|button|on_action=house_on_button_action|id=OH|>
+<|Oklahoma|button|on_action=house_on_button_action|id=OK|>
+<|Oregon|button|on_action=house_on_button_action|id=OR|>
+<|Pennsylvania|button|on_action=house_on_button_action|id=PA|>
+<|Rhode Island|button|on_action=house_on_button_action|id=RI|>
+<|South Carolina|button|on_action=house_on_button_action|id=SC|>
+<|South Dakota|button|on_action=house_on_button_action|id=SD|>
+<|Tennessee|button|on_action=house_on_button_action|id=TN|>
+<|Texas|button|on_action=house_on_button_action|id=TX|>
+<|Utah|button|on_action=house_on_button_action|id=UT|>
+<|Vermont|button|on_action=house_on_button_action|id=VT|>
+<|Virginia|button|on_action=house_on_button_action|id=VA|>
+<|Washington|button|on_action=house_on_button_action|id=WA|>
+<|West Virginia|button|on_action=house_on_button_action|id=WV|>
+<|Wisconsin|button|on_action=house_on_button_action|id=WI|>
+<|Wyoming|button|on_action=house_on_button_action|id=WY|>
+|>
+|>
 """
 
 Senate = """
-## This is page 3
+### Parameters
+##### Select a state to view data for senators from that state.
+<|layout|columns=1 1|
+<|States|expandable|
+<|Alabama|button|on_action=senate_on_button_action|id=AL|>
+<|Alaska|button|on_action=senate_on_button_action|id=AK|>
+<|Arizona|button|on_action=senate_on_button_action|id=AZ|>
+<|Arkansas|button|on_action=senate_on_button_action|id=AR|>
+<|California|button|on_action=senate_on_button_action|id=CA|>
+<|Colorado|button|on_action=senate_on_button_action|id=CO|>
+<|Connecticut|button|on_action=senate_on_button_action|id=CT|>
+<|Delaware|button|on_action=senate_on_button_action|id=DE|>
+<|Florida|button|on_action=senate_on_button_action|id=FL|>
+<|Georgia|button|on_action=senate_on_button_action|id=GA|>
+<|Hawaii|button|on_action=senate_on_button_action|id=HI|>
+<|Idaho|button|on_action=senate_on_button_action|id=ID|>
+<|Illinois|button|on_action=senate_on_button_action|id=IL|>
+<|Indiana|button|on_action=senate_on_button_action|id=IN|>
+<|Iowa|button|on_action=senate_on_button_action|id=IA|>
+<|Kansas|button|on_action=senate_on_button_action|id=KS|>
+<|Kentucky|button|on_action=senate_on_button_action|id=KY|>
+<|Louisiana|button|on_action=senate_on_button_action|id=LA|>
+<|Maine|button|on_action=senate_on_button_action|id=ME|>
+<|Maryland|button|on_action=senate_on_button_action|id=MD|>
+<|Massachusetts|button|on_action=senate_on_button_action|id=MA|>
+<|Michigan|button|on_action=senate_on_button_action|id=MI|>
+<|Minnesota|button|on_action=senate_on_button_action|id=MN|>
+<|Mississippi|button|on_action=senate_on_button_action|id=MS|>
+<|Missouri|button|on_action=senate_on_button_action|id=MO|>
+<|Montana|button|on_action=senate_on_button_action|id=MT|>
+<|Nebraska|button|on_action=senate_on_button_action|id=NE|>
+<|Nevada|button|on_action=senate_on_button_action|id=NV|>
+<|New Hampshire|button|on_action=senate_on_button_action|id=NH|>
+<|New Jersey|button|on_action=senate_on_button_action|id=NJ|>
+<|New Mexico|button|on_action=senate_on_button_action|id=NM|>
+<|New York|button|on_action=senate_on_button_action|id=NY|>
+<|North Carolina|button|on_action=senate_on_button_action|id=NC|>
+<|North Dakota|button|on_action=senate_on_button_action|id=ND|>
+<|Ohio|button|on_action=senate_on_button_action|id=OH|>
+<|Oklahoma|button|on_action=senate_on_button_action|id=OK|>
+<|Oregon|button|on_action=senate_on_button_action|id=OR|>
+<|Pennsylvania|button|on_action=senate_on_button_action|id=PA|>
+<|Rhode Island|button|on_action=senate_on_button_action|id=RI|>
+<|South Carolina|button|on_action=senate_on_button_action|id=SC|>
+<|South Dakota|button|on_action=senate_on_button_action|id=SD|>
+<|Tennessee|button|on_action=senate_on_button_action|id=TN|>
+<|Texas|button|on_action=senate_on_button_action|id=TX|>
+<|Utah|button|on_action=senate_on_button_action|id=UT|>
+<|Vermont|button|on_action=senate_on_button_action|id=VT|>
+<|Virginia|button|on_action=senate_on_button_action|id=VA|>
+<|Washington|button|on_action=senate_on_button_action|id=WA|>
+<|West Virginia|button|on_action=senate_on_button_action|id=WV|>
+<|Wisconsin|button|on_action=senate_on_button_action|id=WI|>
+<|Wyoming|button|on_action=senate_on_button_action|id=WY|>
+|>
+|>
 """
 
 pages = {
@@ -42,6 +149,17 @@ pages = {
 }
 
 logo = "img/arrow.png"
+
+def senate_on_button_action(state, id):
+    id = id
+    print(id)
+
+def house_on_button_action(state, id):
+    id = id
+    print(id)
+
+def on_change(state, var_name, var_value):
+    pass
 
 
 def get_data(path: str):
