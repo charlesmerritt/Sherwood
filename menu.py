@@ -19,12 +19,26 @@ Home = """
 
 ### About the Project   
 =========================
+##### This project was created as a final project for Data Science I at the University of Georgia under the instruction
+##### of Dr. Maria Hybinette. The project was created by: Charles Merritt, Brennin Heinel, and Edward Hayashi. 
+##### The goal of this project is to create a visualization tool that allows users to explore data from the House of
+##### Representatives and the Senate. The data is pulled from the ProPublica Congress API, as well as the Quiver
+##### Quantitative Finance API. The rest of the project is written in Python, using the Taipy library for the GUI, and
+##### core data science libraries such as Pandas, Numpy, and Matplotlib.
+
+### How to use Sherwood
+=========================
+##### To use Sherwood, simply click on the buttons below to navigate to the other pages. You can explore data from the
+##### House of Representatives and the Senate. There you can select a state to view data for representatives from that
+##### state. Once you have selected a representative, you can visualize their trades in a variety of ways. Such as
+##### viewing their trades by date, or by ticker. You can also view the total value of their trades over time. You can
+##### also view the total value of trades for all representatives from a given state. You can also view a pie chart
+##### showing the distribution of stock purchases by industry.
 <|layout|columns=1 3|> 
 
 """
 
 House = """
-### Parameters
 ##### Select a state to view data for representatives from that state.
 <|layout|columns=1 1|
 <|States|expandable|
@@ -83,9 +97,8 @@ House = """
 """
 
 Senate = """
-### Parameters
 ##### Select a state to view data for senators from that state.
-<|layout|columns=1 1|
+<|layout|columns=1 3|
 <|States|expandable|
 <|Alabama|button|on_action=senate_on_button_action|id=AL|>
 <|Alaska|button|on_action=senate_on_button_action|id=AK|>
@@ -137,6 +150,14 @@ Senate = """
 <|West Virginia|button|on_action=senate_on_button_action|id=WV|>
 <|Wisconsin|button|on_action=senate_on_button_action|id=WI|>
 <|Wyoming|button|on_action=senate_on_button_action|id=WY|>
+|>|>
+
+<|Expand|button|on_action={lambda s: s.assign("show", True)}|>
+<|{show}|pane|persistent|anchor=right|on_close={lambda s: s.assign("show", False)}|width=600px|
+<|Senators|expandable|
+
+|>
+<|{dt}|date|not with_time|on_change=start_date_onchange|>
 |>
 |>
 """
@@ -148,8 +169,9 @@ pages = {
     "Senate": Senate
 }
 
+show = True
 logo = "img/arrow.png"
-
+dt = datetime.datetime.now().strftime("%Y-%m-%d")
 
 def senate_on_button_action(id):
     member_df, member_data = createStateLedger(id, 0)
@@ -163,6 +185,9 @@ def senate_on_button_action(id):
     # Maybe not something to be done tn, but possibly make it so that the pop ups can be closed
 
 
+def month_slider_action(state, var_name, value):
+    pass
+
 def house_on_button_action(id):
     id = id
     print(id)
@@ -172,13 +197,12 @@ def pullUpProfile(id):
     return createProfile()
 
 
-def on_change(state, var_name, var_value):
-    pass
-
-
-def get_data(path: str):
-    dataset = pd.read_csv(path)
-    dataset["Date"] = pd.to_datetime(dataset["Date"]).dt.date
+def get_data(path: str, id):
+    dataset = pd.read_json(path)
+    for item in dataset:
+        if id == None:
+            break
+    dataset["first_name"]
     return dataset
 
 
