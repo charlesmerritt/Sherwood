@@ -66,10 +66,17 @@ def houseTrades(name=None, ticker='', daterange=None):
                'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
                'Authorization': f'Token {QUIVER}'}
     r = requests.get(url, headers=headers)
-    print(r.content)
-    #TODO: Parse r.content (json) into call objects and return those instead, separate function probably
-    # obj = CallObject(id, type, daterange, ticker, name)
-    return r.content
+    json_data = json.loads(r.content)
+    if name:
+        filtered_data = []
+        for trade in json_data:
+            if trade['Representative'].strip() == name:
+                filtered_data.append(trade)
+        print(filtered_data)
+        return filtered_data
+    else:
+        print(json_data)
+        return json_data
   
 def senateTrades(name=None, ticker='', daterange=None):
     """
@@ -88,14 +95,21 @@ def senateTrades(name=None, ticker='', daterange=None):
                'Authorization': f'Token {QUIVER}'}
     r = requests.get(url, headers=headers)
     json_data = json.loads(r.content)
-    #TODO: Parse r.content into call objects and return those instead
-    print(json_data)
-    return json_data
+    if name:
+        filtered_data = []
+        for trade in json_data:
+            if trade['Senator'].strip() == name:
+                filtered_data.append(trade)
+        print(filtered_data)
+        return filtered_data
+    else:
+        print(json_data)
+        return json_data
 
 
 def main():
     houseTrades(name='Nancy Pelosi', ticker='/TSLA')
-    senateTrades(name='Mitch McConnell', ticker='/TSLA')
+    senateTrades(name='Whitehouse, Sheldon', ticker='/TSLA')
 
 
 if __name__ == '__main__':
