@@ -2,6 +2,9 @@ import json
 import requests
 import time
 import os
+import pandas as pd
+import numpy as np
+import runpy as rp
 from util import *
 
 QUIVER = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
@@ -10,14 +13,34 @@ live_quiverquant_url = 'https://api.quiverquant.com/beta/live/'
 hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
 congress_propublica_url = 'https://api.propublica.org/congress/v1/'
 
+def createStateLedger(id, biIndicator):
+    rp.run_path('ProPublica_data.py')
+    if(biIndicator==0):
+        member_data = parseJson('member_senate_data.json')
+    else:
+        member_data = parseJson('member_house_data.json')
+    member_df = pd.DataFrame(columns=[0])
+    index = 0
+    column = 0
+    for i, politician in enumerate(member_data):
+        if i > 4:
+            column = column + 1
+            member_df[column] = None
+        if politician['state']==id:
+            member_df.loc[index, column] = \
+                (politician['name'], politician['id'])
+            index = index + 1
+    return member_df, member_data
+
+
 
 class CallObject:
-    def __init__(self, id, name, party, leadershipRole):
+    def __init__(self, id, name, party, leadershipRole=''):
         self.id = id
         self.party = party
         self.name = name
         self.leadershipRole = leadershipRole
-    def setStockData(self, ticker, daterange, tradetype=''):
+    def setStockData(self, ticker, daterange, tradetype):
         self.ticker = ticker
         self.daterange = daterange
         self.tradetype = tradetype

@@ -150,13 +150,27 @@ pages = {
 
 logo = "img/arrow.png"
 
-def senate_on_button_action(state, id):
+
+def senate_on_button_action(id):
+    member_df, member_data = createStateLedger(id, 0)
+    #TODO create an actionable set of buttons with the names from the data frame
+    # Could create a dynamically allocated array of buttons here
+    # Make sure the button stores the id of the politician so it can be called by createProfile
+    # Have there be a call to a method in util.py: createProfile(json, id, name) when a name is clicked on
+    # id is the variable id at the top of each section in the json, it's unique to each official
+    # Then there needs to be some type of input bar, scrollable selector, or smth which allows for the input of a daterange
+    # Could create a separate method which creates this popup that displays necessary info from the politician as well as input spots
+    # Maybe not something to be done tn, but possibly make it so that the pop ups can be closed
+
+
+def house_on_button_action(id):
     id = id
     print(id)
 
-def house_on_button_action(state, id):
-    id = id
-    print(id)
+
+def pullUpProfile(id):
+    return createProfile()
+
 
 def on_change(state, var_name, var_value):
     pass
@@ -175,6 +189,7 @@ def start_date_onchange(state, var_name, value):
 def end_date_onchange(state, var_name, value):
     state.end_date = value.date()
 
+
 def filter_by_date_range(dataset, start_date, end_date):
     mask = (dataset['Date'] > start_date) & (dataset['Date'] <= end_date)
     return dataset.loc[mask]
@@ -182,8 +197,7 @@ def filter_by_date_range(dataset, start_date, end_date):
 
 gui = tp.Gui(pages=pages)
 
-
 if __name__ == '__main__':
     Gui(pages=pages).run(title='Sherwood Visualization Tool',
-                  dark_mode=True,
-                  use_reloader=True)
+                         dark_mode=True,
+                         use_reloader=True)

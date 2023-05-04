@@ -18,19 +18,20 @@ def exception_handler(func):
     return inner
 
 
-def json_to_call_object(json):
-    """
-    :param json: The json object to be parsed into a CallObject
-    :return: CallObject: The call object which contains the data from the json object
-    """
-    id = json['id']
-    type = json['type']
-    daterange = json['daterange']
-    ticker = json['ticker']
-    name = json['name']
-    return CallObject(id, type, daterange, ticker, name)
+def createProfile(json, id, name):
+    for politican in json:
+        if politican['id'] == id:
+            party = politican['party']
+    return CallObject(id, name, party)
 
+def updateProfile(profile, ticker, daterange, tradetype):
+    profile.setStockData(ticker=ticker,
+        daterange=daterange, tradetype=tradetype)
+    return profile
 
+def parseJson(path):
+    with open(path, 'r') as file:
+        return json.load(file)
 def json_to_csv(json):
     """
     :param json: The json object to be parsed into a CSV
