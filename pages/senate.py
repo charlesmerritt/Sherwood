@@ -57,8 +57,8 @@ Senate = Markdown("""
 |>
 
 <|Expand|button|on_action=toggle_sidebar|>
+<|Visualization|pane|persistent|anchor=bottom|on_close=toggle_sidebar|width=600px|partial={visualizer}|>
 <|{show}|pane|persistent|anchor=right|on_close=toggle_sidebar|width=600px|partial={members}|>
-
 
 |>
 """)

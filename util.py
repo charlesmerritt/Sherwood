@@ -1,10 +1,10 @@
-from datetime import datetime
 from main import *
 import pandas as pd
 import json
 import runpy as rp
-
 from congress import CongressMembers
+from datetime import datetime
+
 
 def exception_handler(func):
     """
@@ -60,9 +60,9 @@ def get_members(state, is_house):
 
 
 def create_profile(json, id, name):
-    for politican in json:
-        if politican['id'] == id:
-            party = politican['party']
+    for politician in json:
+        if politician['id'] == id:
+            party = politician['party']
     return CallObject(id, name, party)
 
 
@@ -80,3 +80,20 @@ def json_to_csv(json):
     df = pd.read_json(json)
     csv = df.to_csv('data.csv')
     return csv
+
+
+def pull_senate_data(name, date, ticker):
+
+    trades_data = get_trades(name=name, ticker=ticker, date=date, is_house=False)
+    senate_trades_df = pd.DataFrame(trades_data)
+    return senate_trades_df
+
+
+def pull_house_data(name, date, ticker):
+
+    trades_data = get_trades(name=name, ticker=ticker, date=date, is_house=True)
+    house_trades_df = pd.DataFrame(trades_data)
+    return house_trades_df
+
+# house_trades(name='Nancy Pelosi', ticker='') all trades from pelosi
+# senate_trades(name='Whitehouse, Sheldon', ticker='/TSLA')

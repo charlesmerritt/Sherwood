@@ -1,9 +1,11 @@
 from datetime import datetime
+import time
 from taipy.gui import Gui
 from congress import CongressMembers
 from pages.house import House
 from pages.senate import Senate
-from util import get_members
+from util import get_members, pull_house_data, pull_senate_data
+from charts import Visualizations
 
 root = """
 ## Sherwood Visualization Tool
@@ -39,11 +41,13 @@ Home = """
 
 show = True
 logo = "img/arrow.png"
-start_dt = datetime.now()
+start_dt = datetime.fromtimestamp(time.time())
+end_dt = datetime.fromtimestamp(time.time())
 
 congress_list: list[CongressMembers] = []
 selected_congress: CongressMembers = None
-
+charts_list: list[Visualizations] = []
+# data =
 
 def senator_state_clicked(state, id):
     state.congress_list = get_members(id, False)
@@ -57,12 +61,12 @@ def toggle_sidebar(state):
     state.show = not state.show
 
 
-def on_change(state):
-    print(state.start_dt)
-
-
 def filter_by_date_range(dataset, start_date, end_date):
     mask = (dataset['Date'] > start_date) & (dataset['Date'] <= end_date)
+
+
+def on_change(state):
+    print(state.start_dt)
 
 
 pages = {
@@ -77,7 +81,15 @@ members = gui.add_partial("""
 <|Congress Members|expandable|
 <|{selected_congress}|selector|lov={congress_list}|type=CongressMembers|adapter={lambda c: (c.id, c.name)}|>
 |>
-<|{start_dt}|date|not with_time|>
+
+<|Visualization Options|expandable|
+<|start date|text|><|{start_dt}|date|not with_time|> <|end date|text|> <|{end_dt}|date|not with_time|>
+<|Select Visualization|selector|lov={charts}|type=VisualizationType|>
+|>
+""")
+
+visualizer = gui.add_partial("""
+<|Visualizer|expandable|>
 """)
 
 gui.run(title='Sherwood Visualization Tool',

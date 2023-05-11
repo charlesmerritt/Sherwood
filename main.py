@@ -23,7 +23,7 @@ class CallObject:
         return self.ticker, self.daterange, self.tradetype
 
 
-def house_trades(name=None, ticker='', daterange=None):
+def get_trades(name=None, ticker='', daterange=None, is_house = True):
     """
     :param name: The name of the Representative whose trades you want to grab,
     :param ticker: The name of the stock symbol which you want to grab. Prefixed by a '/' like '/TSLA'
@@ -31,9 +31,19 @@ def house_trades(name=None, ticker='', daterange=None):
     :return: r.content: The content of the api call.
     """
     if ticker != '':
-        url = f"https://api.quiverquant.com/beta/historical/housetrading{ticker}"
+        if is_house:
+            chamber = 'house'
+            url = f"https://api.quiverquant.com/beta/historical/{chamber}trading{ticker}"
+        else:
+            chamber = 'senate'
+            url = f"https://api.quiverquant.com/beta/historical/{chamber}trading{ticker}"
     else:
-        url = f"https://api.quiverquant.com/beta/live/housetrading"
+        if is_house:
+            chamber = 'house'
+            url = f"https://api.quiverquant.com/beta/live/{chamber}trading"
+        else:
+            chamber = 'senate'
+            url = f"https://api.quiverquant.com/beta/live/{chamber}trading"
     print(url)
     headers = {'accept': 'application/json',
                'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
@@ -43,49 +53,24 @@ def house_trades(name=None, ticker='', daterange=None):
     if name:
         filtered_data = []
         for trade in json_data:
-            if trade['Representative'].strip() == name:
-                filtered_data.append(trade)
+            if is_house:
+                if trade['Representative'].strip() == name:
+                    filtered_data.append(trade)
+            else:
+                if trade['Senator'].strip() == name:
+                    filtered_data.append(trade)
         print(filtered_data)
         return filtered_data
     else:
         print(json_data)
         return json_data
-
-
-
-def senate_trades(name=None, ticker='', daterange=None):
-    """
-    :param name: The name of the Senator whose trades you want to viz,
-    :param ticker: The name of the stock symbol which you want to viz. Prefixed by a '/' like '/TSLA'
-    :param daterange: MMDDYYYY like [04072018, 05142019]
-    :return: r.content: The content of the api call.
-    """
-    if ticker != '':
-        url = f"https://api.quiverquant.com/beta/historical/senatetrading{ticker}"
-    else:
-        url = f"https://api.quiverquant.com/beta/live/senatetrading"
-    print(url)
-    headers = {'accept': 'application/json',
-               'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
-               'Authorization': f'Token {QUIVER}'}
-    r = requests.get(url, headers=headers)
-    json_data = json.loads(r.content)
-    if name:
-        filtered_data = []
-        for trade in json_data:
-            if trade['Senator'].strip() == name:
-                filtered_data.append(trade)
-        print(filtered_data)
-        return filtered_data
-    else:
-        print(json_data)
-        return json_data
-
 
 
 def main():
-    house_trades(name='Nancy Pelosi', ticker='/TSLA')
-    senate_trades(name='Whitehouse, Sheldon', ticker='/TSLA')
+    get_trades(name='Nancy Pelosi', ticker='')
+    get_trades(name='Nancy Pelosi', ticker='/TSLA')
+    get_trades(name='Whitehouse, Sheldon', ticker='/T', is_house=False)
+    get_trades(name='Whitehouse, Sheldon', ticker='', is_house=False)
 
 
 if __name__ == '__main__':
