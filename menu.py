@@ -4,8 +4,7 @@ from taipy.gui import Gui
 from congress import CongressMembers
 from pages.house import House
 from pages.senate import Senate
-from util import get_members, pull_house_data, pull_senate_data
-from charts import Visualizations
+from util import get_members, get_trades
 
 root = """
 ## Sherwood Visualization Tool
@@ -46,8 +45,9 @@ end_dt = datetime.fromtimestamp(time.time())
 
 congress_list: list[CongressMembers] = []
 selected_congress: CongressMembers = None
-charts_list: list[Visualizations] = []
+charts = ["Pie Chart", "Line Graph", "Heatmap"]
 # data =
+
 
 def senator_state_clicked(state, id):
     state.congress_list = get_members(id, False)
@@ -63,11 +63,13 @@ def toggle_sidebar(state):
 
 def filter_by_date_range(dataset, start_date, end_date):
     mask = (dataset['Date'] > start_date) & (dataset['Date'] <= end_date)
+# TODO Make work with start date and end date buttons
 
 
-def on_change(state):
-    print(state.start_dt)
+def create_chart(state, id, data):
 
+    data = get_trades(ticker='',)
+    print(data)
 
 pages = {
     "/": root,
@@ -83,7 +85,7 @@ members = gui.add_partial("""
 |>
 
 <|Visualization Options|expandable|
-<|start date|text|><|{start_dt}|date|not with_time|> <|end date|text|> <|{end_dt}|date|not with_time|>
+<|Start date|text|><|{start_dt}|date|not with_time|> <|End date|text|> <|{end_dt}|date|not with_time|>
 <|Select Visualization|selector|lov={charts}|type=VisualizationType|>
 |>
 """)

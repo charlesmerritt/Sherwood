@@ -23,11 +23,12 @@ class CallObject:
         return self.ticker, self.daterange, self.tradetype
 
 
-def get_trades(name=None, ticker='', daterange=None, is_house = True):
+def get_trades(name=None, ticker='', daterange=None, is_house=True):
     """
     :param name: The name of the Representative whose trades you want to grab,
     :param ticker: The name of the stock symbol which you want to grab. Prefixed by a '/' like '/TSLA'
     :param daterange: MMDDYYYY like [04072018, 05142019]
+    :param is_house: True if you want to grab house data, False if you want to grab senate data
     :return: r.content: The content of the api call.
     """
     if ticker != '':
@@ -59,18 +60,22 @@ def get_trades(name=None, ticker='', daterange=None, is_house = True):
             else:
                 if trade['Senator'].strip() == name:
                     filtered_data.append(trade)
-        print(filtered_data)
-        return filtered_data
+        trades_df = pd.DataFrame(filtered_data)
     else:
-        print(json_data)
-        return json_data
+        trades_df = pd.DataFrame(json_data)
+    trades_df.dropna(inplace=True)
+    return trades_df
 
 
 def main():
-    get_trades(name='Nancy Pelosi', ticker='')
-    get_trades(name='Nancy Pelosi', ticker='/TSLA')
-    get_trades(name='Whitehouse, Sheldon', ticker='/T', is_house=False)
-    get_trades(name='Whitehouse, Sheldon', ticker='', is_house=False)
+    trades = get_trades(name='Nancy Pelosi', ticker='')
+    print(trades)
+    trades = get_trades(name='Nancy Pelosi', ticker='/TSLA')
+    print(trades)
+    trades = get_trades(name='Whitehouse, Sheldon', ticker='/T', is_house=False)
+    print(trades)
+    trades = get_trades(name='Whitehouse, Sheldon', ticker='', is_house=False)
+    print(trades)
 
 
 if __name__ == '__main__':

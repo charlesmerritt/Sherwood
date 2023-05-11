@@ -55,7 +55,6 @@ def get_members(state, is_house):
     if not is_house:
         new_list.sort(key=lambda m: m.last_updated)
         new_list = new_list[-2:]
-
     return new_list
 
 
@@ -80,20 +79,3 @@ def json_to_csv(json):
     df = pd.read_json(json)
     csv = df.to_csv('data.csv')
     return csv
-
-
-def pull_senate_data(name, date, ticker):
-
-    trades_data = get_trades(name=name, ticker=ticker, date=date, is_house=False)
-    senate_trades_df = pd.DataFrame(trades_data)
-    return senate_trades_df
-
-
-def pull_house_data(name, date, ticker):
-
-    trades_data = get_trades(name=name, ticker=ticker, date=date, is_house=True)
-    house_trades_df = pd.DataFrame(trades_data)
-    return house_trades_df
-
-# house_trades(name='Nancy Pelosi', ticker='') all trades from pelosi
-# senate_trades(name='Whitehouse, Sheldon', ticker='/TSLA')
