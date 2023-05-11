@@ -1,10 +1,4 @@
-import json
 import requests
-import time
-import os
-import pandas as pd
-import numpy as np
-import runpy as rp
 from util import *
 
 QUIVER = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
@@ -12,27 +6,6 @@ PROPUBLICA = 'Z41JVKlvZxtLM1ADHn7Myn7xiWLrW6PKZNwnNtRV'
 live_quiverquant_url = 'https://api.quiverquant.com/beta/live/'
 hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
 congress_propublica_url = 'https://api.propublica.org/congress/v1/'
-
-def createStateLedger(id, biIndicator):
-    rp.run_path('ProPublica_data.py')
-    if(biIndicator==0):
-        member_data = parseJson('member_senate_data.json')
-    else:
-        member_data = parseJson('member_house_data.json')
-    member_df = pd.DataFrame(columns=[0])
-    index = 0
-    column = 0
-    for i, politician in enumerate(member_data):
-        if i > 4:
-            column = column + 1
-            member_df[column] = None
-        if politician['state']==id:
-            member_df.loc[index, column] = \
-                (politician['name'], politician['id'])
-            index = index + 1
-    return member_df, member_data
-
-
 
 class CallObject:
     def __init__(self, id, name, party, leadershipRole=''):
@@ -49,8 +22,8 @@ class CallObject:
     def getStockData(self):
         return self.ticker, self.daterange, self.tradetype
 
-#TODO: Maybe merge houseTrades and senateTrades into one function with fstrings
-def houseTrades(name=None, ticker='', daterange=None):
+
+def house_trades(name=None, ticker='', daterange=None):
     """
     :param name: The name of the Representative whose trades you want to grab,
     :param ticker: The name of the stock symbol which you want to grab. Prefixed by a '/' like '/TSLA'
@@ -77,8 +50,10 @@ def houseTrades(name=None, ticker='', daterange=None):
     else:
         print(json_data)
         return json_data
-  
-def senateTrades(name=None, ticker='', daterange=None):
+
+
+
+def senate_trades(name=None, ticker='', daterange=None):
     """
     :param name: The name of the Senator whose trades you want to viz,
     :param ticker: The name of the stock symbol which you want to viz. Prefixed by a '/' like '/TSLA'
@@ -107,9 +82,10 @@ def senateTrades(name=None, ticker='', daterange=None):
         return json_data
 
 
+
 def main():
-    houseTrades(name='Nancy Pelosi', ticker='/TSLA')
-    senateTrades(name='Whitehouse, Sheldon', ticker='/TSLA')
+    house_trades(name='Nancy Pelosi', ticker='/TSLA')
+    senate_trades(name='Whitehouse, Sheldon', ticker='/TSLA')
 
 
 if __name__ == '__main__':
