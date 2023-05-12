@@ -1,8 +1,8 @@
 import requests
 from util import *
 
-QUIVER = '20643798f4e7c8bdb2164cf3a4a3831d0cf3b4eb'
-PROPUBLICA = 'Z41JVKlvZxtLM1ADHn7Myn7xiWLrW6PKZNwnNtRV'
+QUIVER = ''
+PROPUBLICA = ''
 live_quiverquant_url = 'https://api.quiverquant.com/beta/live/'
 hist_quiverquant_url = 'https://api.quiverquant.com/beta/historical/'
 congress_propublica_url = 'https://api.propublica.org/congress/v1/'
