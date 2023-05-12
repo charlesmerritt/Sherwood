@@ -9,3 +9,5 @@ The goals of Sherwood are...
 - To expose potential conflicts of interest within our government.
 ## The philosophy
 We believe that good humans will practice what they preach, this is even more important for politicians and other government officials who are supposed to represent their constituents at the highest levels of our government. Indeed this is the goal behind the 2012 STOCK act which required politicians and their immediate family memers to report any trades they make that are valued over $1000 within 45 days. As the Russian maxim goes, "trust, but verify." These officials have found themselves in a position of trust, we believe it is our duty to verify. 
+## Video
+https://youtu.be/T0lrBboUCVA
